@@ -70,7 +70,7 @@
         <dependency>
             <groupId>cn.idev.excel</groupId>
             <artifactId>fastexcel-support</artifactId>
-            <version>${revision}</version>
+            <version>0.0.1</version>
         </dependency>
     </dependencies>
 </project>
