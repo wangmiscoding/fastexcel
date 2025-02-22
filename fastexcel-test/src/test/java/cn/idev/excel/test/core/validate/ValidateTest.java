@@ -1,7 +1,9 @@
 package cn.idev.excel.test.core.validate;
 
 import cn.idev.excel.FastExcel;
+import cn.idev.excel.read.builder.ExcelReaderBuilder;
 import cn.idev.excel.read.listener.PageReadListener;
+import cn.idev.excel.read.listener.ValidateReadListener;
 import cn.idev.excel.test.demo.read.DemoData;
 import cn.idev.excel.test.util.TestFileUtil;
 import com.alibaba.fastjson2.JSON;
@@ -23,8 +25,9 @@ public class ValidateTest {
     @Test
     public void testCheckRead() {
         String fileName = TestFileUtil.getPath() + "checkRead"  + ".xlsx";
-
-        FastExcel.read(fileName).head(DemoData.class).registerReadListener(new PageReadListener<DemoData>(list->{
+        ExcelReaderBuilder readerBuilder = FastExcel.read(fileName).head(DemoData.class);
+        readerBuilder.registerReadListener(new ValidateReadListener<>());
+        readerBuilder.registerReadListener(new PageReadListener<DemoData>(list->{
             log.info("导入数据:{}", JSON.toJSONString(list));
         })).sheet().doReadSync();
 
