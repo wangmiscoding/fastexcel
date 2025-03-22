@@ -70,6 +70,7 @@ public class FileUtils {
         // Initialize the error file directory
         File errorFile = new File(errorFilePath);
         createDirectory(errorFile);
+        errorFile.deleteOnExit();
     }
 
     /**
