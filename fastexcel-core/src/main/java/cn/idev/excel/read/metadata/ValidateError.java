@@ -3,16 +3,18 @@ package cn.idev.excel.read.metadata;
 import cn.idev.excel.exception.ExcelDataConvertException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Validation error message
+ * validation error message
  *
  * @author wangmeng
  */
 @Getter
 @Setter
 @EqualsAndHashCode
+@NoArgsConstructor
 public class ValidateError {
 
     /**
@@ -35,4 +37,16 @@ public class ValidateError {
      */
     private boolean convertError = false;
 
+
+    public ValidateError(Integer rowNum, String headName, String message) {
+        this.rowNum = rowNum;
+        this.headName = headName;
+        this.message = message;
+    }
+
+
+    public ValidateError(Integer rowNum, String message) {
+        this.rowNum = rowNum;
+        this.message = message;
+    }
 }
