@@ -1,5 +1,9 @@
 package cn.idev.excel.util;
 
+import cn.idev.excel.exception.ExcelAnalysisException;
+import cn.idev.excel.exception.ExcelCommonException;
+import org.apache.poi.util.TempFile;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,30 +14,24 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.UUID;
 
-import cn.idev.excel.exception.ExcelAnalysisException;
-import cn.idev.excel.exception.ExcelCommonException;
-
-import org.apache.poi.util.TempFile;
-
 /**
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements.  See the NOTICE
+ * file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file
+ * to You under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the
+ * License.  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  *
  * @author Apache Software Foundation (ASF)
  */
 public class FileUtils {
+
     public static final String POI_FILES = "poifiles";
+
     public static final String EX_CACHE = "excache";
+
     public static final String ERROR_FILES = "errorfiles";
     /**
      * If a server has multiple projects in use at the same time, a directory with the same name will be created under
@@ -41,15 +39,19 @@ public class FileUtils {
      * project creates a unique UUID as a separate Temporary Files.
      */
     private static String tempFilePrefix =
-        System.getProperty(TempFile.JAVA_IO_TMPDIR) + File.separator + UUID.randomUUID().toString() + File.separator;
+            System.getProperty(TempFile.JAVA_IO_TMPDIR) + File.separator + UUID.randomUUID().toString()
+                    + File.separator;
+
     /**
      * Used to store poi temporary files.
      */
     private static String poiFilesPath = tempFilePrefix + POI_FILES + File.separator;
+
     /**
      * Used to store easy excel temporary files.
      */
     private static String cachePath = tempFilePrefix + EX_CACHE + File.separator;
+
     /**
      * Used to store error temporary files
      */
@@ -57,7 +59,8 @@ public class FileUtils {
 
     private static final int WRITE_BUFF_SIZE = 8192;
 
-    private FileUtils() {}
+    private FileUtils() {
+    }
 
     static {
         // Create a temporary directory in advance
@@ -84,7 +87,7 @@ public class FileUtils {
         InputStream in = openInputStream(file);
         try {
             final long fileLength = file.length();
-            return fileLength > 0 ? IoUtils.toByteArray(in, (int)fileLength) : IoUtils.toByteArray(in);
+            return fileLength > 0 ? IoUtils.toByteArray(in, (int) fileLength) : IoUtils.toByteArray(in);
         } finally {
             in.close();
         }
@@ -208,6 +211,7 @@ public class FileUtils {
             file.delete();
         }
     }
+
 
     /**
      * Generate a temporary error file based on the source file

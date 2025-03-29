@@ -25,12 +25,20 @@ import java.nio.charset.Charset;
 import java.util.HashSet;
 import java.util.List;
 
+import javax.xml.parsers.SAXParserFactory;
+import java.io.File;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.util.HashSet;
+import java.util.List;
+
 /**
  * Build ExcelReader
  *
  * @author Jiaju Zhuang
  */
 public class ExcelReaderBuilder extends AbstractExcelReaderParameterBuilder<ExcelReaderBuilder, ReadWorkbook> {
+
     /**
      * Workbook
      */
@@ -79,8 +87,7 @@ public class ExcelReaderBuilder extends AbstractExcelReaderParameterBuilder<Exce
     }
 
     /**
-     * charset.
-     * Only work on the CSV file
+     * charset. Only work on the CSV file
      */
     public ExcelReaderBuilder charset(Charset charset) {
         readWorkbook.setCharset(charset);
@@ -209,8 +216,8 @@ public class ExcelReaderBuilder extends AbstractExcelReaderParameterBuilder<Exce
     }
 
     /**
-     * Read not to {@code cn.idev.excel.metadata.BasicParameter#clazz} value, the default will return type.
-     * Is only effective when set `useDefaultListener=true` or `useDefaultListener=null`.
+     * Read not to {@code cn.idev.excel.metadata.BasicParameter#clazz} value, the default will return type. Is only
+     * effective when set `useDefaultListener=true` or `useDefaultListener=null`.
      *
      * @see ReadDefaultReturnEnum
      */
@@ -246,7 +253,7 @@ public class ExcelReaderBuilder extends AbstractExcelReaderParameterBuilder<Exce
             excelReader.readAll();
             excelReader.finish();
         }
-        return (List<T>)syncReadListener.getList();
+        return (List<T>) syncReadListener.getList();
     }
 
     public ExcelReaderSheetBuilder sheet() {

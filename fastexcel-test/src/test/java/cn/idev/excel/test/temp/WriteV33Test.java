@@ -1,27 +1,26 @@
 package cn.idev.excel.test.temp;
 
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import cn.idev.excel.EasyExcel;
 import cn.idev.excel.test.demo.write.DemoData;
 import cn.idev.excel.test.util.TestFileUtil;
 import cn.idev.excel.util.BooleanUtils;
 import cn.idev.excel.write.handler.CellWriteHandler;
 import cn.idev.excel.write.handler.context.CellWriteHandlerContext;
-
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 临时测试
@@ -30,9 +29,9 @@ import org.slf4j.LoggerFactory;
  **/
 
 public class WriteV33Test {
-
+    
     private static final Logger LOGGER = LoggerFactory.getLogger(WriteV33Test.class);
-
+    
     @Test
     public void handlerStyleWrite() {
         // 方法1 使用已有的策略 推荐
@@ -92,40 +91,38 @@ public class WriteV33Test {
         //        }
         //    }).sheet("模板")
         //    .doWrite(data());
-
+        
         // 方法3: 使用poi的样式完全自己写 不推荐
         // 坑1：style里面有dataformat 用来格式化数据的 所以自己设置可能导致格式化注解不生效
         // 坑2：不要一直去创建style 记得缓存起来 最多创建6W个就挂了
         fileName = TestFileUtil.getPath() + "handlerStyleWrite" + System.currentTimeMillis() + ".xlsx";
-        EasyExcel.write(fileName, DemoData.class)
-            .registerWriteHandler(new CellWriteHandler() {
-                @Override
-                public void afterCellDispose(CellWriteHandlerContext context) {
-                    // 当前事件会在 数据设置到poi的cell里面才会回调
-                    // 判断不是头的情况 如果是fill 的情况 这里会==null 所以用not true
-                    if (BooleanUtils.isNotTrue(context.getHead())) {
-                        Cell cell = context.getCell();
-                        // 拿到poi的workbook
-                        Workbook workbook = context.getWriteWorkbookHolder().getWorkbook();
-                        // 这里千万记住 想办法能复用的地方把他缓存起来 一个表格最多创建6W个样式
-                        // 不同单元格尽量传同一个 cellStyle
-                        CellStyle cellStyle = workbook.createCellStyle();
-                        cellStyle.setFillForegroundColor(IndexedColors.RED.getIndex());
-                        // 这里需要指定 FillPatternType 为FillPatternType.SOLID_FOREGROUND
-                        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-                        cell.setCellStyle(cellStyle);
-
-                        // 由于这里没有指定datafrmat 所以格式化出来的数据需要
-
-                        // 这里要把 WriteCellData的样式清空， 不然后面还有一个拦截器 FillStyleCellWriteHandler 默认会将 WriteCellStyle 设置到
-                        // cell里面去 会导致自己设置的不一样
-                        context.getFirstCellData().setWriteCellStyle(null);
-                    }
+        EasyExcel.write(fileName, DemoData.class).registerWriteHandler(new CellWriteHandler() {
+            @Override
+            public void afterCellDispose(CellWriteHandlerContext context) {
+                // 当前事件会在 数据设置到poi的cell里面才会回调
+                // 判断不是头的情况 如果是fill 的情况 这里会==null 所以用not true
+                if (BooleanUtils.isNotTrue(context.getHead())) {
+                    Cell cell = context.getCell();
+                    // 拿到poi的workbook
+                    Workbook workbook = context.getWriteWorkbookHolder().getWorkbook();
+                    // 这里千万记住 想办法能复用的地方把他缓存起来 一个表格最多创建6W个样式
+                    // 不同单元格尽量传同一个 cellStyle
+                    CellStyle cellStyle = workbook.createCellStyle();
+                    cellStyle.setFillForegroundColor(IndexedColors.RED.getIndex());
+                    // 这里需要指定 FillPatternType 为FillPatternType.SOLID_FOREGROUND
+                    cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+                    cell.setCellStyle(cellStyle);
+                    
+                    // 由于这里没有指定datafrmat 所以格式化出来的数据需要
+                    
+                    // 这里要把 WriteCellData的样式清空， 不然后面还有一个拦截器 FillStyleCellWriteHandler 默认会将 WriteCellStyle 设置到
+                    // cell里面去 会导致自己设置的不一样
+                    context.getFirstCellData().setWriteCellStyle(null);
                 }
-            }).sheet("模板")
-            .doWrite(data());
+            }
+        }).sheet("模板").doWrite(data());
     }
-
+    
     private List<DemoData> data() {
         List<DemoData> list = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
@@ -137,12 +134,12 @@ public class WriteV33Test {
         }
         return list;
     }
-
-
+    
+    
     @Test
-    public void test4() throws Exception{
-       Path path= Files.createTempFile(new File("/Users/zhuangjiaju/test/test0422/test/xx").toPath(),System.currentTimeMillis()+"",".jpg");
+    public void test4(@TempDir Path tempDir) throws Exception {
+        Path path = Files.createTempFile(tempDir, System.currentTimeMillis() + "", ".jpg");
         System.out.println(path);
     }
-
+    
 }
