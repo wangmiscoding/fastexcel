@@ -251,8 +251,7 @@ public class WriteTest {
             imageDemoData.setFile(new File(imagePath));
             imageDemoData.setString(imagePath);
             imageDemoData.setInputStream(inputStream);
-            imageDemoData.setUrl(
-                    new URL("https://raw.githubusercontent.com/fast-excel/fastexcel/master/src/test/resources/converter/img.jpg"));
+            imageDemoData.setUrl(new URL("https://poi.apache.org/images/project-header.png"));
             
             // 这里演示
             // 需要额外放入文字
@@ -303,6 +302,9 @@ public class WriteTest {
             
             // 写入数据
             EasyExcel.write(fileName, ImageDemoData.class).sheet().doWrite(list);
+            // 如果图片资源不可访问，XLSX格式会报错 SXSSFWorkbook - Failed to dispose sheet
+            // 也可以考虑声明为XLS格式
+            // EasyExcel.write(fileName, ImageDemoData.class).excelType(ExcelTypeEnum.XLS).sheet().doWrite(list);
         }
     }
     
