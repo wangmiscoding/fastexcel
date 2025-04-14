@@ -2,13 +2,16 @@ package cn.idev.excel.test.demo.write;
 
 import cn.idev.excel.annotation.ExcelProperty;
 import cn.idev.excel.annotation.write.style.HeadFontStyle;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.Getter;
 import org.apache.poi.ss.usermodel.Font;
 
 /**
- * Basic data class
+ * Basic data class for test color
  *
- * @author Jiaju Zhuang
  **/
 @Getter
 @Setter

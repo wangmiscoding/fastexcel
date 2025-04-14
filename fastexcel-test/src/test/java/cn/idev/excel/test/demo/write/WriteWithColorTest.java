@@ -8,9 +8,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @author wangmeng
+ * Class for testing colors
+ *
  */
-public class WriteWithColor {
+public class WriteWithColorTest {
 
 
     @Test
